@@ -38,6 +38,10 @@ export default function HomePage() {
       return () => clearTimeout(timer)
     } else if (timeLeft === 0) {
       setIsRunning(false)
+      // 30秒経過時に新しいメモページを開く
+      setTitle("")
+      setBullets([{ id: Date.now().toString(), text: "" }])
+      setTimeLeft(30)
     }
   }, [isRunning, timeLeft])
 
