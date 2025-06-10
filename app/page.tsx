@@ -99,11 +99,6 @@ export default function HomePage() {
     })
   }, [])
 
-  const resetMemo = useCallback(() => {
-    setTitle("")
-    setBullets([{ id: Date.now().toString(), text: "" }])
-    resetTimer()
-  }, [resetTimer])
 
   // イベントハンドラー
   const handleTitleFocus = useCallback(() => {
@@ -194,9 +189,6 @@ export default function HomePage() {
               ))}
             </div>
 
-            <Button onClick={resetMemo} className="w-full">
-              リセット
-            </Button>
           </div>
         </div>
       </div>
