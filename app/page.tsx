@@ -127,25 +127,29 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
-          <div className="p-8 space-y-4">
-            <div className="flex justify-between items-center mb-6">
-              <div className="text-4xl font-bold">
-                {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
-              </div>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={isRunning ? stopTimer : startTimer}
-                  variant={isRunning ? "destructive" : "default"}
-                  size="sm"
-                >
-                  {isRunning ? "停止" : "開始"}
-                </Button>
-                <Button onClick={resetTimer} variant="outline" size="sm">
-                  リセット
-                </Button>
-              </div>
+        <div className="bg-white shadow-lg rounded-sm relative" style={PAPER_STYLES}>
+          <div className="absolute top-4 right-4 flex items-center gap-3">
+            <div className="text-2xl font-bold">
+              {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
             </div>
+            <Button 
+              onClick={isRunning ? stopTimer : startTimer}
+              variant={isRunning ? "destructive" : "default"}
+              size="sm"
+              className="text-xs px-2 py-1 h-6"
+            >
+              {isRunning ? "停止" : "開始"}
+            </Button>
+            <Button 
+              onClick={resetTimer} 
+              variant="outline" 
+              size="sm"
+              className="text-xs px-2 py-1 h-6"
+            >
+              リセット
+            </Button>
+          </div>
+          <div className="p-8 space-y-4">
             <Input
               placeholder="タイトルを入力..."
               value={title}
