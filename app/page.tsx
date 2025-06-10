@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X } from "lucide-react"
@@ -23,9 +23,39 @@ export default function HomePage() {
   const [bullets, setBullets] = useState<Bullet[]>([
     { id: Date.now().toString(), text: "" }
   ])
+  const [timeLeft, setTimeLeft] = useState(30)
+  const [isRunning, setIsRunning] = useState(false)
 
   // 入力があるかチェック
   const hasContent = title.trim() || bullets.some(bullet => bullet.text.trim())
+
+  // タイマー処理
+  useEffect(() => {
+    if (isRunning && timeLeft > 0) {
+      const timer = setTimeout(() => {
+        setTimeLeft(prev => prev - 1)
+      }, 1000)
+      return () => clearTimeout(timer)
+    } else if (timeLeft === 0) {
+      setIsRunning(false)
+    }
+  }, [isRunning, timeLeft])
+
+  const startTimer = useCallback(() => {
+    setIsRunning(true)
+    if (timeLeft === 0) {
+      setTimeLeft(30)
+    }
+  }, [timeLeft])
+
+  const stopTimer = useCallback(() => {
+    setIsRunning(false)
+  }, [])
+
+  const resetTimer = useCallback(() => {
+    setIsRunning(false)
+    setTimeLeft(30)
+  }, [])
 
   // フォーカス管理
   const focusInput = useCallback((selector: string) => {
@@ -68,7 +98,8 @@ export default function HomePage() {
   const resetMemo = useCallback(() => {
     setTitle("")
     setBullets([{ id: Date.now().toString(), text: "" }])
-  }, [])
+    resetTimer()
+  }, [resetTimer])
 
   // イベントハンドラー
   const handleTitleKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -98,6 +129,23 @@ export default function HomePage() {
       <div className="max-w-6xl mx-auto">
         <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
           <div className="p-8 space-y-4">
+            <div className="flex justify-between items-center mb-6">
+              <div className="text-4xl font-bold">
+                {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={isRunning ? stopTimer : startTimer}
+                  variant={isRunning ? "destructive" : "default"}
+                  size="sm"
+                >
+                  {isRunning ? "停止" : "開始"}
+                </Button>
+                <Button onClick={resetTimer} variant="outline" size="sm">
+                  リセット
+                </Button>
+              </div>
+            </div>
             <Input
               placeholder="タイトルを入力..."
               value={title}
