@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a "Zero Second Thinking" (０秒思考) productivity app built with Next.js 15.2.4, React 19, TypeScript, and shadcn/ui components. The app helps users create rapid-fire memos with a 30-second timer to capture thoughts quickly.
+This is a simple memo-taking app inspired by "Zero Second Thinking" (０秒思考) methodology, built with Next.js 15.2.4, React 19, TypeScript, and minimal shadcn/ui components. The app provides a clean interface for creating memos with title and bullet points in an A4 landscape layout.
 
 ## Commands
 
@@ -24,30 +24,45 @@ npm run lint    # Run ESLint
 
 ### Tech Stack
 - **Framework**: Next.js 15.2.4 with App Router
-- **UI Components**: shadcn/ui (complete component library in `components/ui/`)
-- **Styling**: Tailwind CSS with custom theme colors and animations
-- **State Management**: React hooks with localStorage persistence
+- **UI Components**: Minimal shadcn/ui (Button, Input, Card only)
+- **Styling**: Tailwind CSS with basic styling
+- **State Management**: React hooks (useState, useCallback)
 - **Language**: TypeScript with strict mode
 
-### Core Application Flow
-1. **Main Page** (`app/page.tsx`): Entry point containing the entire application logic
-2. **Data Persistence**: All memo data stored in localStorage as JSON
-3. **Timer System**: 30-second countdown for each memo creation
-4. **Progress Tracking**: Daily memo goals with visual progress indicators
+### Core Application Features
+1. **A4 Landscape Layout**: 297mm x 210mm paper-like interface
+2. **Title Input**: Single title field with Enter key navigation
+3. **Bullet Points**: Dynamic bullet list with keyboard navigation
+4. **Keyboard Navigation**: Enter moves to next field (only if current field has content)
+5. **Bullet Management**: Add/remove bullets with × button
+6. **Reset Function**: Clear all inputs and start fresh
 
 ### Key Data Structures
-- **Memo**: `{ id, content, createdAt }`
-- **Settings**: `{ dailyGoal }` (default: 10 memos/day)
-- **LocalStorage Keys**: `memos`, `settings`
+- **Bullet**: `{ id: string, text: string }`
+- **State**: `title` (string) and `bullets` (Bullet array)
 
 ### Component Organization
-- All UI components are pre-built shadcn/ui components in `components/ui/`
-- The main application logic is contained in a single file: `app/page.tsx`
-- No custom components outside of the shadcn/ui library
+- Single file application in `app/page.tsx`
+- Minimal UI components: Button, Input only
+- No complex state management or timers
+- Focus on simplicity and clean code
 
-## Development Notes
+## Development Principles
 
-- The project has ESLint and TypeScript errors ignored during builds (`ignoreBuildErrors: true` in next.config.mjs)
-- No testing framework is currently configured
-- All styling uses Tailwind CSS utility classes
-- Dark mode support is configured but implementation may be incomplete
+### Simplicity First
+- **Keep it simple**: Avoid complex abstractions, prefer straightforward implementations
+- **Single responsibility**: Each function should do one thing well
+- **Minimal dependencies**: Only use necessary libraries and components
+- **No premature optimization**: Write clear code first, optimize only when needed
+
+### Code Quality
+- **useCallback wisely**: Only memoize functions that are passed as props or used in effects
+- **Avoid React.memo**: Keep components simple without unnecessary optimization
+- **Clean functions**: Extract reusable logic into well-named helper functions
+- **TypeScript**: Use proper typing for better developer experience
+
+### Architecture Guidelines
+- **Single file**: Keep the application in one file until complexity requires separation
+- **No over-engineering**: Don't add features or abstractions that aren't needed
+- **Focus on UX**: Prioritize smooth user interactions and keyboard navigation
+- **A4 paper metaphor**: Maintain the clean, paper-like aesthetic
