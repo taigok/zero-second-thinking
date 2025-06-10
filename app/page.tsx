@@ -102,6 +102,12 @@ export default function HomePage() {
   }, [resetTimer])
 
   // イベントハンドラー
+  const handleTitleFocus = useCallback(() => {
+    if (!isRunning && timeLeft === 30) {
+      setIsRunning(true)
+    }
+  }, [isRunning, timeLeft])
+
   const handleTitleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.nativeEvent.isComposing && title.trim()) {
       e.preventDefault()
@@ -136,7 +142,7 @@ export default function HomePage() {
               onClick={isRunning ? stopTimer : startTimer}
               variant={isRunning ? "destructive" : "default"}
               size="sm"
-              className="text-xs px-2 py-1 h-6"
+              className="text-xs px-0 py-1 h-6 w-12"
             >
               {isRunning ? "停止" : "開始"}
             </Button>
@@ -144,16 +150,17 @@ export default function HomePage() {
               onClick={resetTimer} 
               variant="outline" 
               size="sm"
-              className="text-xs px-2 py-1 h-6"
+              className="text-xs px-0 py-1 h-6 w-12"
             >
               リセット
             </Button>
           </div>
-          <div className="p-8 space-y-4">
+          <div className="p-8 pt-16 space-y-4">
             <Input
               placeholder="タイトルを入力..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              onFocus={handleTitleFocus}
               onKeyDown={handleTitleKeyDown}
               className={`!text-6xl font-bold !h-auto py-4 ${title.trim() ? 'border-none shadow-none bg-transparent' : ''}`}
             />
