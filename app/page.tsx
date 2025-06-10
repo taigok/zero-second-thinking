@@ -69,7 +69,7 @@ export default function HomePage() {
 
   // イベントハンドラー
   const handleTitleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && title.trim()) {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing && title.trim()) {
       e.preventDefault()
       e.stopPropagation()
       focusInput('.bullet-input')
@@ -77,7 +77,7 @@ export default function HomePage() {
   }, [title, focusInput])
 
   const handleBulletKeyDown = useCallback((e: React.KeyboardEvent, bullet: Bullet, index: number) => {
-    if (e.key === "Enter" && bullet.text.trim()) {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing && bullet.text.trim()) {
       e.preventDefault()
       e.stopPropagation()
 
