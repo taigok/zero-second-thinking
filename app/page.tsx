@@ -24,6 +24,9 @@ export default function HomePage() {
     { id: Date.now().toString(), text: "" }
   ])
 
+  // 入力があるかチェック
+  const hasContent = title.trim() || bullets.some(bullet => bullet.text.trim())
+
   // フォーカス管理
   const focusInput = useCallback((selector: string) => {
     setTimeout(() => {
@@ -100,7 +103,7 @@ export default function HomePage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onKeyDown={handleTitleKeyDown}
-              className="!text-6xl font-bold !h-auto py-4"
+              className={`!text-6xl font-bold !h-auto py-4 ${title.trim() ? 'border-none shadow-none bg-transparent' : ''}`}
             />
 
             <div className="space-y-2">
@@ -108,7 +111,7 @@ export default function HomePage() {
                 <div key={bullet.id} className="flex items-center gap-2">
                   <span>•</span>
                   <Input
-                    className="bullet-input"
+                    className={`bullet-input ${bullet.text.trim() ? 'border-none shadow-none bg-transparent' : ''}`}
                     placeholder="箇条書きを入力..."
                     value={bullet.text}
                     onChange={(e) => updateBullet(bullet.id, e.target.value)}
