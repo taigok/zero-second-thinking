@@ -75,11 +75,15 @@ export default function HomePage() {
     } else if (timeLeft === 0) {
       setIsRunning(false)
       // 30秒経過時にメモを保存してリセット
-      if (hasContent && currentMemoStartTime) {
+      const currentTitle = title
+      const currentBullets = bullets
+      const currentHasContent = currentTitle.trim() || currentBullets.some(bullet => bullet.text.trim())
+      
+      if (currentHasContent && currentMemoStartTime) {
         const memo: SavedMemo = {
           id: Date.now().toString(),
-          title,
-          bullets: bullets.filter(bullet => bullet.text.trim()),
+          title: currentTitle,
+          bullets: currentBullets.filter(bullet => bullet.text.trim()),
           createdAt: currentMemoStartTime,
           completedAt: new Date()
         }
@@ -91,7 +95,7 @@ export default function HomePage() {
       setTimeLeft(30)
       setCurrentMemoStartTime(null)
     }
-  }, [isRunning, timeLeft, hasContent, currentMemoStartTime, title, bullets, saveMemoToStorage])
+  }, [isRunning, timeLeft])
 
   const startTimer = useCallback(() => {
     setIsRunning(true)
