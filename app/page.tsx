@@ -17,6 +17,29 @@ export default function HomePage() {
     { id: Date.now().toString(), text: "" }
   ])
 
+  // フォーカス管理のヘルパー関数
+  const focusInput = useCallback((selector: string) => {
+    setTimeout(() => {
+      const input = document.querySelector(selector) as HTMLInputElement
+      if (input) {
+        input.focus()
+        input.select()
+      }
+    }, 0)
+  }, [])
+
+  const focusBulletByIndex = useCallback((index: number) => {
+    setTimeout(() => {
+      const bulletInputs = document.querySelectorAll('.bullet-input')
+      const targetInput = bulletInputs[index] as HTMLInputElement
+      if (targetInput) {
+        targetInput.focus()
+        targetInput.select()
+      }
+    }, 0)
+  }, [])
+
+  // 状態更新関数
   const updateBullet = useCallback((id: string, value: string) => {
     setBullets(prev => 
       prev.map(bullet => 
@@ -32,7 +55,6 @@ export default function HomePage() {
   const removeBullet = useCallback((id: string) => {
     setBullets(prev => {
       const filtered = prev.filter(bullet => bullet.id !== id)
-      // 最低1つは残す
       return filtered.length > 0 ? filtered : [{ id: Date.now().toString(), text: "" }]
     })
   }, [])
@@ -41,6 +63,35 @@ export default function HomePage() {
     setTitle("")
     setBullets([{ id: Date.now().toString(), text: "" }])
   }, [])
+
+  // キーボードイベントハンドラー
+  const handleTitleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      e.stopPropagation()
+      if (title.trim()) {
+        focusInput('.bullet-input')
+      }
+    }
+  }, [title, focusInput])
+
+  const handleBulletKeyDown = useCallback((e: React.KeyboardEvent, bullet: Bullet, index: number) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      if (bullet.text.trim()) {
+        if (index === bullets.length - 1) {
+          // 最後の箇条書きの場合、新しい箇条書きを追加
+          addBullet()
+          setTimeout(() => focusBulletByIndex(bullets.length), 0)
+        } else {
+          // 次の箇条書きにフォーカス
+          focusBulletByIndex(index + 1)
+        }
+      }
+    }
+  }, [bullets.length, addBullet, focusBulletByIndex])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -51,21 +102,7 @@ export default function HomePage() {
               placeholder="タイトルを入力..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  if (title.trim()) {
-                    setTimeout(() => {
-                      const firstBulletInput = document.querySelector('.bullet-input') as HTMLInputElement
-                      if (firstBulletInput) {
-                        firstBulletInput.focus()
-                        firstBulletInput.select() // 既存の文字があれば選択状態にする
-                      }
-                    }, 0)
-                  }
-                }
-              }}
+              onKeyDown={handleTitleKeyDown}
             />
 
             <div className="space-y-2">
@@ -77,37 +114,7 @@ export default function HomePage() {
                     placeholder="箇条書きを入力..."
                     value={bullet.text}
                     onChange={(e) => updateBullet(bullet.id, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        // 現在の入力欄が空でない場合のみ次へ進む
-                        if (bullet.text.trim()) {
-                          if (index === bullets.length - 1) {
-                            // 最後の箇条書きの場合、新しい箇条書きを追加
-                            addBullet()
-                            setTimeout(() => {
-                              const bulletInputs = document.querySelectorAll('.bullet-input')
-                              const lastInput = bulletInputs[bulletInputs.length - 1] as HTMLInputElement
-                              if (lastInput) {
-                                lastInput.focus()
-                                lastInput.select()
-                              }
-                            }, 0)
-                          } else {
-                            // 次の箇条書きにフォーカス
-                            setTimeout(() => {
-                              const bulletInputs = document.querySelectorAll('.bullet-input')
-                              const nextInput = bulletInputs[index + 1] as HTMLInputElement
-                              if (nextInput) {
-                                nextInput.focus()
-                                nextInput.select()
-                              }
-                            }, 0)
-                          }
-                        }
-                      }
-                    }}
+                    onKeyDown={(e) => handleBulletKeyDown(e, bullet, index)}
                   />
                   {bullets.length > 1 && (
                     <Button
