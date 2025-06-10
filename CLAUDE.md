@@ -66,3 +66,6 @@ npm run lint    # Run ESLint
 - **No over-engineering**: Don't add features or abstractions that aren't needed
 - **Focus on UX**: Prioritize smooth user interactions and keyboard navigation
 - **A4 paper metaphor**: Maintain the clean, paper-like aesthetic
+
+## Development Workflow
+- **Auto-commit**: Automatically commit changes when completing user-requested tasks
