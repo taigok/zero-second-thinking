@@ -44,8 +44,8 @@ export default function HomePage() {
 
   // 状態管理
   const updateBullet = useCallback((id: string, value: string) => {
-    setBullets(prev => 
-      prev.map(bullet => 
+    setBullets(prev =>
+      prev.map(bullet =>
         bullet.id === id ? { ...bullet, text: value } : bullet
       )
     )
@@ -80,7 +80,7 @@ export default function HomePage() {
     if (e.key === "Enter" && bullet.text.trim()) {
       e.preventDefault()
       e.stopPropagation()
-      
+
       if (index === bullets.length - 1) {
         addBullet()
         setTimeout(() => focusBulletByIndex(bullets.length), 0)
@@ -100,8 +100,9 @@ export default function HomePage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onKeyDown={handleTitleKeyDown}
+              className="!text-6xl font-bold !h-auto py-4"
             />
-            
+
             <div className="space-y-2">
               {bullets.map((bullet, index) => (
                 <div key={bullet.id} className="flex items-center gap-2">
