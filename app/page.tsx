@@ -115,7 +115,7 @@ export default function HomePage() {
 
   const resetTimer = useCallback(() => {
     setIsRunning(false)
-    setTimeLeft(30)
+    setTimeLeft(60)
   }, [])
 
   // フォーカス管理
