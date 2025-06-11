@@ -32,7 +32,7 @@ export default function HomePage() {
   const [bullets, setBullets] = useState<Bullet[]>([
     { id: Date.now().toString(), text: "" }
   ])
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(60)
   const [isRunning, setIsRunning] = useState(false)
   const [savedMemos, setSavedMemos] = useState<SavedMemo[]>([])
   const [currentMemoStartTime, setCurrentMemoStartTime] = useState<Date | null>(null)
@@ -76,7 +76,7 @@ export default function HomePage() {
       return () => clearTimeout(timer)
     } else if (timeLeft === 0) {
       setIsRunning(false)
-      // 30秒経過時にメモを保存してリセット
+      // 1分経過時にメモを保存してリセット
       const currentTitle = title
       const currentBullets = bullets
       const currentHasContent = currentTitle.trim() || currentBullets.some(bullet => bullet.text.trim())
@@ -94,7 +94,7 @@ export default function HomePage() {
       // 新しいメモページを開く
       setTitle("")
       setBullets([{ id: Date.now().toString(), text: "" }])
-      setTimeLeft(30)
+      setTimeLeft(60)
       setCurrentMemoStartTime(null)
     }
   }, [isRunning, timeLeft])
@@ -102,7 +102,7 @@ export default function HomePage() {
   const startTimer = useCallback(() => {
     setIsRunning(true)
     if (timeLeft === 0) {
-      setTimeLeft(30)
+      setTimeLeft(60)
     }
     if (!currentMemoStartTime) {
       setCurrentMemoStartTime(new Date())
@@ -159,7 +159,7 @@ export default function HomePage() {
 
   // イベントハンドラー
   const handleTitleFocus = useCallback(() => {
-    if (!isRunning && timeLeft === 30) {
+    if (!isRunning && timeLeft === 60) {
       setIsRunning(true)
       setCurrentMemoStartTime(new Date())
     }
