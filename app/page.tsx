@@ -230,10 +230,10 @@ export default function HomePage() {
   }, [savedMemos])
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-4">
       <div className="mx-auto" style={{width: PAPER_STYLES.width, maxWidth: PAPER_STYLES.maxWidth}}>
         {/* 紙の幅に合わせたコントロール */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
             <TabsList className="h-10">
               <TabsTrigger value="memo" className="px-4 py-2">メモ</TabsTrigger>
@@ -281,7 +281,7 @@ export default function HomePage() {
         <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
           
           {activeTab === "memo" && (
-            <div className="p-8 space-y-4">
+            <div className="p-6 space-y-4">
               <Input
                 placeholder="タイトルを入力..."
                 value={title}
@@ -321,7 +321,7 @@ export default function HomePage() {
           )}
 
           {activeTab === "history" && (
-            <div className="p-8">
+            <div className="p-6">
               <h3 className="text-2xl font-bold mb-6">メモ履歴 ({savedMemos.length})</h3>
               <Tabs defaultValue="today" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
