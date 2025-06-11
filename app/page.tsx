@@ -236,8 +236,8 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-2">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
             <TabsList className="h-10 bg-gray-200/50 border">
-              <TabsTrigger value="memo" className="px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 data-[state=active]:font-semibold hover:bg-white/70 transition-colors">メモ</TabsTrigger>
-              <TabsTrigger value="history" className="px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 data-[state=active]:font-semibold hover:bg-white/70 transition-colors">履歴</TabsTrigger>
+              <TabsTrigger value="memo" className="px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:font-semibold hover:bg-white/70 transition-colors">メモ</TabsTrigger>
+              <TabsTrigger value="history" className="px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:font-semibold hover:bg-white/70 transition-colors">履歴</TabsTrigger>
             </TabsList>
           </Tabs>
           
