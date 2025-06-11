@@ -231,29 +231,28 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white shadow-lg rounded-sm relative" style={PAPER_STYLES}>
-          <div className="absolute top-4 left-4">
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
-              <TabsList className="h-8">
-                <TabsTrigger value="memo" className="text-xs px-2 py-1">メモ</TabsTrigger>
-                <TabsTrigger value="history" className="text-xs px-2 py-1">履歴</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
+      <div className="max-w-6xl mx-auto space-y-4">
+        {/* 紙の外のコントロール */}
+        <div className="flex items-center justify-between">
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
+            <TabsList className="h-10">
+              <TabsTrigger value="memo" className="px-4 py-2">メモ</TabsTrigger>
+              <TabsTrigger value="history" className="px-4 py-2">履歴</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          
           {activeTab === "memo" && (
-            <div className="absolute top-4 right-4 flex items-center gap-3">
+            <div className="flex items-center gap-4">
               {viewingMemo && (
                 <Button 
                   onClick={startNewMemo}
                   variant="default" 
                   size="sm"
-                  className="text-xs px-2 py-1 h-6"
                 >
                   新しいメモ
                 </Button>
               )}
-              <div className="text-2xl font-bold">
+              <div className="text-3xl font-bold tabular-nums">
                 {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
               </div>
               {!viewingMemo && (
@@ -262,7 +261,6 @@ export default function HomePage() {
                     onClick={isRunning ? stopTimer : startTimer}
                     variant={isRunning ? "destructive" : "default"}
                     size="sm"
-                    className="text-xs px-2 py-1 h-6"
                   >
                     {isRunning ? "停止" : "開始"}
                   </Button>
@@ -270,7 +268,6 @@ export default function HomePage() {
                     onClick={resetTimer} 
                     variant="outline" 
                     size="sm"
-                    className="text-xs px-2 py-1 h-6"
                   >
                     リセット
                   </Button>
@@ -278,9 +275,13 @@ export default function HomePage() {
               )}
             </div>
           )}
+        </div>
+
+        {/* A4紙 */}
+        <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
           
           {activeTab === "memo" && (
-            <div className="p-8 pt-16 space-y-4">
+            <div className="p-8 space-y-4">
               <Input
                 placeholder="タイトルを入力..."
                 value={title}
@@ -320,7 +321,7 @@ export default function HomePage() {
           )}
 
           {activeTab === "history" && (
-            <div className="p-8 pt-16">
+            <div className="p-8">
               <h3 className="text-2xl font-bold mb-6">メモ履歴 ({savedMemos.length})</h3>
               <Tabs defaultValue="today" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
