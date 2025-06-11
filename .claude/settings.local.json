@@ -5,7 +5,8 @@
       "Bash(sudo npm install:*)",
       "Bash(rm:*)",
       "Bash(npx shadcn:*)",
-      "Bash(claude mcp list)"
+      "Bash(claude mcp list)",
+      "mcp__puppeteer__puppeteer_navigate"
     ],
     "deny": []
   },

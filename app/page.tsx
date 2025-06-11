@@ -232,53 +232,52 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto space-y-4">
-        {/* 紙の外のコントロール */}
-        <div className="flex items-center justify-between">
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
-            <TabsList className="h-10">
-              <TabsTrigger value="memo" className="px-4 py-2">メモ</TabsTrigger>
-              <TabsTrigger value="history" className="px-4 py-2">履歴</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          
-          {activeTab === "memo" && (
-            <div className="flex items-center gap-4">
-              {viewingMemo && (
-                <Button 
-                  onClick={startNewMemo}
-                  variant="default" 
-                  size="sm"
-                >
-                  新しいメモ
-                </Button>
-              )}
-              <div className="text-3xl font-bold tabular-nums">
-                {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
-              </div>
-              {!viewingMemo && (
-                <>
-                  <Button 
-                    onClick={isRunning ? stopTimer : startTimer}
-                    variant={isRunning ? "destructive" : "default"}
-                    size="sm"
-                  >
-                    {isRunning ? "停止" : "開始"}
-                  </Button>
-                  <Button 
-                    onClick={resetTimer} 
-                    variant="outline" 
-                    size="sm"
-                  >
-                    リセット
-                  </Button>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-
         {/* A4紙 */}
-        <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
+        <div className="bg-white shadow-lg rounded-sm relative" style={PAPER_STYLES}>
+          {/* 紙の幅に合わせたコントロール */}
+          <div className="absolute -top-16 left-0 right-0 flex items-center justify-between px-8">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
+              <TabsList className="h-10">
+                <TabsTrigger value="memo" className="px-4 py-2">メモ</TabsTrigger>
+                <TabsTrigger value="history" className="px-4 py-2">履歴</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            
+            {activeTab === "memo" && (
+              <div className="flex items-center gap-4">
+                {viewingMemo && (
+                  <Button 
+                    onClick={startNewMemo}
+                    variant="default" 
+                    size="sm"
+                  >
+                    新しいメモ
+                  </Button>
+                )}
+                <div className="text-3xl font-bold tabular-nums">
+                  {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
+                </div>
+                {!viewingMemo && (
+                  <>
+                    <Button 
+                      onClick={isRunning ? stopTimer : startTimer}
+                      variant={isRunning ? "destructive" : "default"}
+                      size="sm"
+                    >
+                      {isRunning ? "停止" : "開始"}
+                    </Button>
+                    <Button 
+                      onClick={resetTimer} 
+                      variant="outline" 
+                      size="sm"
+                    >
+                      リセット
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
           
           {activeTab === "memo" && (
             <div className="p-8 space-y-4">
@@ -289,7 +288,7 @@ export default function HomePage() {
                 onFocus={!viewingMemo ? handleTitleFocus : undefined}
                 onKeyDown={!viewingMemo ? handleTitleKeyDown : undefined}
                 readOnly={!!viewingMemo}
-                className={`!text-6xl font-bold !h-auto py-4 ${title.trim() ? 'border-none shadow-none bg-transparent' : ''} ${viewingMemo ? 'cursor-default' : ''}`}
+                className={`!text-4xl font-bold !h-auto py-4 overflow-hidden ${title.trim() ? 'border-none shadow-none bg-transparent' : ''} ${viewingMemo ? 'cursor-default' : ''}`}
               />
 
               <div className="space-y-2">
