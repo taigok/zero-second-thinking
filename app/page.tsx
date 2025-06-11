@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar } from "@/components/ui/calendar"
 import { X } from "lucide-react"
 
 interface Bullet {
@@ -39,7 +38,6 @@ export default function HomePage() {
   const [currentMemoStartTime, setCurrentMemoStartTime] = useState<Date | null>(null)
   const [viewingMemo, setViewingMemo] = useState<SavedMemo | null>(null)
   const [activeTab, setActiveTab] = useState<"memo" | "history">("memo")
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
 
   // 入力があるかチェック
   const hasContent = title.trim() || bullets.some(bullet => bullet.text.trim())
@@ -231,22 +229,6 @@ export default function HomePage() {
     }
   }, [savedMemos])
 
-  // 選択された日付のメモを取得する関数
-  const getMemosForDate = useCallback((date: Date) => {
-    return savedMemos.filter(memo => 
-      memo.createdAt.toDateString() === date.toDateString()
-    )
-  }, [savedMemos])
-
-  // メモがある日付を取得する関数
-  const getDatesWithMemos = useCallback(() => {
-    const dates = new Set<string>()
-    savedMemos.forEach(memo => {
-      dates.add(memo.createdAt.toDateString())
-    })
-    return dates
-  }, [savedMemos])
-
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
@@ -340,74 +322,6 @@ export default function HomePage() {
           {activeTab === "history" && (
             <div className="p-8 pt-16">
               <h3 className="text-2xl font-bold mb-6">メモ履歴 ({savedMemos.length})</h3>
-              
-              {/* カレンダー */}
-              <div className="mb-6 flex justify-center">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  className="rounded-md border"
-                  modifiers={{
-                    hasMemo: (date) => {
-                      const datesWithMemos = getDatesWithMemos()
-                      return datesWithMemos.has(date.toDateString())
-                    }
-                  }}
-                  modifiersStyles={{
-                    hasMemo: {
-                      backgroundColor: "rgb(59 130 246 / 0.5)",
-                      color: "white",
-                      fontWeight: "bold"
-                    }
-                  }}
-                />
-              </div>
-
-              {/* 選択された日付のメモ */}
-              {selectedDate && (
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold mb-4">
-                    {selectedDate.toLocaleDateString('ja-JP', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}のメモ ({getMemosForDate(selectedDate).length}件)
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {getMemosForDate(selectedDate).map((memo) => (
-                      <div
-                        key={memo.id}
-                        className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
-                        onClick={() => viewMemo(memo)}
-                      >
-                        <div className="font-medium text-lg truncate mb-2">
-                          {memo.title || "無題"}
-                        </div>
-                        <div className="text-sm text-gray-500 mb-2">
-                          {memo.createdAt.toLocaleString('ja-JP', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {memo.bullets.length}項目
-                        </div>
-                        <div className="text-xs text-gray-500 mt-2">
-                          {memo.bullets.slice(0, 2).map(bullet => bullet.text).join(', ')}
-                          {memo.bullets.length > 2 && '...'}
-                        </div>
-                      </div>
-                    ))}
-                    {getMemosForDate(selectedDate).length === 0 && (
-                      <div className="col-span-full text-gray-500 text-center py-8">
-                        この日のメモはありません
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
               <Tabs defaultValue="today" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="today">今日</TabsTrigger>
