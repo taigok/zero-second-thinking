@@ -3,8 +3,14 @@
     "allow": [
       "Bash(find:*)",
       "Bash(sudo npm install:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npx shadcn:*)",
+      "Bash(claude mcp list)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "filesystem"
+  ]
 }

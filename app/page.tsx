@@ -233,26 +233,26 @@ export default function HomePage() {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white shadow-lg rounded-sm relative" style={PAPER_STYLES}>
-          <div className="absolute top-4 left-4 flex items-center gap-3">
+          <div className="absolute top-4 left-4">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
               <TabsList className="h-8">
                 <TabsTrigger value="memo" className="text-xs px-2 py-1">メモ</TabsTrigger>
                 <TabsTrigger value="history" className="text-xs px-2 py-1">履歴</TabsTrigger>
               </TabsList>
             </Tabs>
-            {viewingMemo && activeTab === "memo" && (
-              <Button 
-                onClick={startNewMemo}
-                variant="outline" 
-                size="sm"
-                className="text-xs"
-              >
-                新しいメモ
-              </Button>
-            )}
           </div>
           {activeTab === "memo" && (
             <div className="absolute top-4 right-4 flex items-center gap-3">
+              {viewingMemo && (
+                <Button 
+                  onClick={startNewMemo}
+                  variant="default" 
+                  size="sm"
+                  className="text-xs px-2 py-1 h-6"
+                >
+                  新しいメモ
+                </Button>
+              )}
               <div className="text-2xl font-bold">
                 {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
               </div>
@@ -262,7 +262,7 @@ export default function HomePage() {
                     onClick={isRunning ? stopTimer : startTimer}
                     variant={isRunning ? "destructive" : "default"}
                     size="sm"
-                    className="text-xs px-0 py-1 h-6 w-12"
+                    className="text-xs px-2 py-1 h-6"
                   >
                     {isRunning ? "停止" : "開始"}
                   </Button>
@@ -270,7 +270,7 @@ export default function HomePage() {
                     onClick={resetTimer} 
                     variant="outline" 
                     size="sm"
-                    className="text-xs px-0 py-1 h-6 w-12"
+                    className="text-xs px-2 py-1 h-6"
                   >
                     リセット
                   </Button>
