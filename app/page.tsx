@@ -229,6 +229,14 @@ export default function HomePage() {
     }
   }, [savedMemos])
 
+  // 今日のメモ数をカウント
+  const todayMemoCount = useCallback(() => {
+    const today = new Date()
+    return savedMemos.filter(memo => 
+      memo.createdAt.toDateString() === today.toDateString()
+    ).length
+  }, [savedMemos])
+
   return (
     <div className="min-h-screen bg-gray-100 p-2">
       <div className="mx-auto" style={{width: PAPER_STYLES.width, maxWidth: PAPER_STYLES.maxWidth}}>
@@ -285,13 +293,16 @@ export default function HomePage() {
           
           {activeTab === "memo" && (
             <div className="p-4 space-y-3">
-              {/* 今日の日付 */}
+              {/* 今日の日付と枚数 */}
               <div className="text-right text-sm text-gray-500 mb-2">
                 {new Date().toLocaleDateString('ja-JP', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
                 })}
+                <span className="ml-3">
+                  {todayMemoCount() + 1}枚目
+                </span>
               </div>
               <Input
                 placeholder="タイトルを入力..."
