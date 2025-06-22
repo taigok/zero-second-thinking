@@ -195,7 +195,6 @@ export default function HomePage() {
     setIsRunning(false)
     setTimeLeft(30)
     setCurrentMemoStartTime(null)
-    setActiveTab("memo")
   }, [])
 
   // 新しいメモに戻る関数
@@ -344,8 +343,41 @@ export default function HomePage() {
 
           {activeTab === "history" && (
             <div className="p-4 pb-8 h-full overflow-auto">
-              <h3 className="text-xl font-bold mb-4">メモ履歴 ({savedMemos.length})</h3>
-              <Tabs defaultValue="today" className="w-full">
+              {viewingMemo ? (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between mb-4">
+                    <Button 
+                      onClick={() => setViewingMemo(null)}
+                      variant="outline" 
+                      size="sm"
+                      className="h-7 px-3 text-sm"
+                    >
+                      ← 履歴に戻る
+                    </Button>
+                    <div className="text-sm text-gray-500">
+                      {viewingMemo.createdAt.toLocaleDateString('ja-JP', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </div>
+                  <h2 className="text-3xl font-bold">{viewingMemo.title || "無題"}</h2>
+                  <div className="space-y-1">
+                    {viewingMemo.bullets.map((bullet) => (
+                      <div key={bullet.id} className="flex items-center gap-2">
+                        <span>•</span>
+                        <span>{bullet.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h3 className="text-xl font-bold mb-4">メモ履歴 ({savedMemos.length})</h3>
+                  <Tabs defaultValue="today" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 h-8">
                   <TabsTrigger value="today" className="text-sm py-1">今日</TabsTrigger>
                   <TabsTrigger value="yesterday" className="text-sm py-1">昨日</TabsTrigger>
@@ -456,6 +488,8 @@ export default function HomePage() {
                   </div>
                 </TabsContent>
               </Tabs>
+                </>
+              )}
             </div>
           )}
         </div>
