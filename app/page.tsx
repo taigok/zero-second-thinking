@@ -231,9 +231,10 @@ export default function HomePage() {
   // 今日のメモ数をカウント
   const todayMemoCount = useCallback(() => {
     const today = new Date()
-    return savedMemos.filter(memo => 
-      memo.createdAt.toDateString() === today.toDateString()
-    ).length
+    return savedMemos.filter(memo => {
+      const memoDate = new Date(memo.createdAt)
+      return memoDate.toDateString() === today.toDateString()
+    }).length
   }, [savedMemos])
 
   return (
