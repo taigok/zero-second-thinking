@@ -6,7 +6,8 @@
       "Bash(rm:*)",
       "Bash(npx shadcn:*)",
       "Bash(claude mcp list)",
-      "mcp__puppeteer__puppeteer_navigate"
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot"
     ],
     "deny": []
   },
