@@ -343,7 +343,7 @@ export default function HomePage() {
           )}
 
           {activeTab === "history" && (
-            <div className="p-4">
+            <div className="p-4 pb-8 h-full overflow-auto">
               <h3 className="text-xl font-bold mb-4">メモ履歴 ({savedMemos.length})</h3>
               <Tabs defaultValue="today" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 h-8">
@@ -353,11 +353,11 @@ export default function HomePage() {
                 </TabsList>
                 
                 <TabsContent value="today" className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                     {categorizeMemos().today.map((memo) => (
                       <div
                         key={memo.id}
-                        className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
+                        className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
                         onClick={() => viewMemo(memo)}
                       >
                         <div className="font-medium text-lg truncate mb-2">
@@ -387,11 +387,11 @@ export default function HomePage() {
                 </TabsContent>
                 
                 <TabsContent value="yesterday" className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                     {categorizeMemos().yesterday.map((memo) => (
                       <div
                         key={memo.id}
-                        className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
+                        className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
                         onClick={() => viewMemo(memo)}
                       >
                         <div className="font-medium text-lg truncate mb-2">
@@ -421,11 +421,11 @@ export default function HomePage() {
                 </TabsContent>
                 
                 <TabsContent value="older" className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                     {categorizeMemos().older.map((memo) => (
                       <div
                         key={memo.id}
-                        className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
+                        className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
                         onClick={() => viewMemo(memo)}
                       >
                         <div className="font-medium text-lg truncate mb-2">
