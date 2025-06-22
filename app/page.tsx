@@ -230,29 +230,30 @@ export default function HomePage() {
   }, [savedMemos])
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-100 p-2">
       <div className="mx-auto" style={{width: PAPER_STYLES.width, maxWidth: PAPER_STYLES.maxWidth}}>
         {/* 紙の幅に合わせたコントロール */}
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-1">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "memo" | "history")}>
-            <TabsList className="h-10 bg-gray-200/50 border">
-              <TabsTrigger value="memo" className="px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:font-semibold hover:bg-white/70 transition-colors">メモ</TabsTrigger>
-              <TabsTrigger value="history" className="px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:font-semibold hover:bg-white/70 transition-colors">履歴</TabsTrigger>
+            <TabsList className="h-8 bg-gray-200/50 border">
+              <TabsTrigger value="memo" className="px-3 py-1 text-sm data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:font-semibold hover:bg-white/70 transition-colors">メモ</TabsTrigger>
+              <TabsTrigger value="history" className="px-3 py-1 text-sm data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:font-semibold hover:bg-white/70 transition-colors">履歴</TabsTrigger>
             </TabsList>
           </Tabs>
           
           {activeTab === "memo" && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               {viewingMemo && (
                 <Button 
                   onClick={startNewMemo}
                   variant="default" 
                   size="sm"
+                  className="h-7 px-3 text-sm"
                 >
                   新しいメモ
                 </Button>
               )}
-              <div className="text-3xl font-bold tabular-nums">
+              <div className="text-2xl font-bold tabular-nums">
                 {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}
               </div>
               {!viewingMemo && (
@@ -261,6 +262,7 @@ export default function HomePage() {
                     onClick={isRunning ? stopTimer : startTimer}
                     variant={isRunning ? "destructive" : "default"}
                     size="sm"
+                    className="h-7 px-3 text-sm"
                   >
                     {isRunning ? "停止" : "開始"}
                   </Button>
@@ -268,6 +270,7 @@ export default function HomePage() {
                     onClick={resetTimer} 
                     variant="outline" 
                     size="sm"
+                    className="h-7 px-3 text-sm"
                   >
                     リセット
                   </Button>
@@ -281,7 +284,7 @@ export default function HomePage() {
         <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
           
           {activeTab === "memo" && (
-            <div className="p-6 space-y-4">
+            <div className="p-4 space-y-3">
               <Input
                 placeholder="タイトルを入力..."
                 value={title}
@@ -289,10 +292,10 @@ export default function HomePage() {
                 onFocus={!viewingMemo ? handleTitleFocus : undefined}
                 onKeyDown={!viewingMemo ? handleTitleKeyDown : undefined}
                 readOnly={!!viewingMemo}
-                className={`!text-4xl font-bold !h-auto py-4 overflow-hidden ${title.trim() ? 'border-none shadow-none bg-transparent' : ''} ${viewingMemo ? 'cursor-default' : ''}`}
+                className={`!text-3xl font-bold !h-auto py-3 overflow-hidden ${title.trim() ? 'border-none shadow-none bg-transparent' : ''} ${viewingMemo ? 'cursor-default' : ''}`}
               />
 
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {bullets.map((bullet, index) => (
                   <div key={bullet.id} className="flex items-center gap-2">
                     <span>•</span>
@@ -309,7 +312,7 @@ export default function HomePage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => removeBullet(bullet.id)}
-                        className="p-1 h-auto"
+                        className="p-0.5 h-auto"
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -321,16 +324,16 @@ export default function HomePage() {
           )}
 
           {activeTab === "history" && (
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-6">メモ履歴 ({savedMemos.length})</h3>
+            <div className="p-4">
+              <h3 className="text-xl font-bold mb-4">メモ履歴 ({savedMemos.length})</h3>
               <Tabs defaultValue="today" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="today">今日</TabsTrigger>
-                  <TabsTrigger value="yesterday">昨日</TabsTrigger>
-                  <TabsTrigger value="older">以前</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 h-8">
+                  <TabsTrigger value="today" className="text-sm py-1">今日</TabsTrigger>
+                  <TabsTrigger value="yesterday" className="text-sm py-1">昨日</TabsTrigger>
+                  <TabsTrigger value="older" className="text-sm py-1">以前</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="today" className="mt-6">
+                <TabsContent value="today" className="mt-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categorizeMemos().today.map((memo) => (
                       <div
@@ -357,14 +360,14 @@ export default function HomePage() {
                       </div>
                     ))}
                     {categorizeMemos().today.length === 0 && (
-                      <div className="col-span-full text-gray-500 text-center py-16">
+                      <div className="col-span-full text-gray-500 text-center py-8">
                         今日のメモはありません
                       </div>
                     )}
                   </div>
                 </TabsContent>
                 
-                <TabsContent value="yesterday" className="mt-6">
+                <TabsContent value="yesterday" className="mt-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categorizeMemos().yesterday.map((memo) => (
                       <div
@@ -391,14 +394,14 @@ export default function HomePage() {
                       </div>
                     ))}
                     {categorizeMemos().yesterday.length === 0 && (
-                      <div className="col-span-full text-gray-500 text-center py-16">
+                      <div className="col-span-full text-gray-500 text-center py-8">
                         昨日のメモはありません
                       </div>
                     )}
                   </div>
                 </TabsContent>
                 
-                <TabsContent value="older" className="mt-6">
+                <TabsContent value="older" className="mt-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categorizeMemos().older.map((memo) => (
                       <div
@@ -427,7 +430,7 @@ export default function HomePage() {
                       </div>
                     ))}
                     {categorizeMemos().older.length === 0 && (
-                      <div className="col-span-full text-gray-500 text-center py-16">
+                      <div className="col-span-full text-gray-500 text-center py-8">
                         以前のメモはありません
                       </div>
                     )}
