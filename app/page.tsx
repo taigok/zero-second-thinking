@@ -284,7 +284,15 @@ export default function HomePage() {
         <div className="bg-white shadow-lg rounded-sm" style={PAPER_STYLES}>
           
           {activeTab === "memo" && (
-            <div className="p-4 space-y-3">
+            <div className="p-4 space-y-3 relative">
+              {/* 今日の日付 */}
+              <div className="absolute top-4 right-4 text-sm text-gray-500">
+                {new Date().toLocaleDateString('ja-JP', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </div>
               <Input
                 placeholder="タイトルを入力..."
                 value={title}
@@ -292,7 +300,7 @@ export default function HomePage() {
                 onFocus={!viewingMemo ? handleTitleFocus : undefined}
                 onKeyDown={!viewingMemo ? handleTitleKeyDown : undefined}
                 readOnly={!!viewingMemo}
-                className={`!text-3xl font-bold !h-auto py-3 overflow-hidden ${title.trim() ? 'border-none shadow-none bg-transparent' : ''} ${viewingMemo ? 'cursor-default' : ''}`}
+                className={`!text-3xl font-bold !h-auto py-3 overflow-hidden pr-32 ${title.trim() ? 'border-none shadow-none bg-transparent' : ''} ${viewingMemo ? 'cursor-default' : ''}`}
               />
 
               <div className="space-y-1">
